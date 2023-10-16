@@ -1,0 +1,66 @@
+import { IInformationService, ScopeEnum } from '../interface';
+import { Init, Inject, Provide, Scope } from '../decorator';
+import { dirname, join } from 'path';
+import { existsSync, readFileSync } from 'fs';
+import {
+  getCurrentEnvironment,
+  getUserHome,
+  isDevelopmentEnvironment,
+} from '../util';
+
+@Provide()
+@Scope(ScopeEnum.Singleton)
+export class MidwayInformationService implements IInformationService {
+  private pkg: Record<string, unknown>;
+
+  @Inject()
+  protected appDir: string;
+
+  @Inject()
+  protected baseDir: string;
+
+  @Init()
+  protected init() {
+    if (this.baseDir) {
+      if (!this.appDir) {
+        this.appDir = dirname(this.baseDir);
+      }
+      const pkgPath = join(this.appDir, 'package.json');
+      if (existsSync(pkgPath)) {
+        const content = readFileSync(pkgPath, {
+          encoding: 'utf-8',
+        });
+        this.pkg = JSON.parse(content);
+      } else {
+        this.pkg = {};
+      }
+    } else {
+      this.pkg = {};
+    }
+  }
+
+  getAppDir(): string {
+    return this.appDir;
+  }
+
+  getBaseDir(): string {
+    return this.baseDir;
+  }
+
+  getHome(): string {
+    return getUserHome();
+  }
+
+  getPkg(): any {
+    return this.pkg;
+  }
+
+  getProjectName(): string {
+    return (this.pkg?.['name'] as string) || '';
+  }
+
+  getRoot(): string {
+    const isDevelopmentEnv = isDevelopmentEnvironment(getCurrentEnvironment());
+    return isDevelopmentEnv ? this.getAppDir() : this.getHome();
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compileOnSave": true,
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "moduleResolution": "Node16"
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}

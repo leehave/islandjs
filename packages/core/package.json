@@ -1,0 +1,24 @@
+{
+  "name": "@island/core",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "李志祥 <lizhixiang@dingdingzn.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/core.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "node --require=ts-node/register ../../node_modules/.bin/jest --runInBand",
+    "cov": "node --require=ts-node/register ../../node_modules/.bin/jest --runInBand --coverage --forceExit"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "reflect-metadata": "^0.1.13"
+  }
+}
